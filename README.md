@@ -19,7 +19,7 @@
 
 **Splicing Variation Pipeline**
 
-#Preperation Pipeline
+# Preperation Pipeline
 
 ## 1. Filter fastqs
 
@@ -70,9 +70,9 @@ Pipeline to map RNA-seq data to a reference genome, identify transcripts and gen
     StringTie takes as input a binary SAM (BAM) file sorted by reference position. This file contains spliced read alignments and can be produced directly by programs such as TopHat or it can be obtained by converting and sorting the output of HISAT2. We recommend using HISAT2 as it is a fast and accurate alignment program. A text file in SAM format which was produced by HISAT2 must be sorted and converted to BAM format using the samtools program. The file resulted from the below command (alns.sorted.bam) can be used as input for StringTie.
     >samtools view -Su alns.sam | samtools sort - alns.sorted
 
-#Expression Analysis Pipeline
+# Expression Analysis Pipeline
 
-##1. GTF generation with StringTie
+## 1. GTF generation with StringTie
 * **Extract and merge gene coordinates for each sample with [StringTie](https://ccb.jhu.edu/software/stringtie/index.shtml)** - A fast and highly efficient assembler of RNA-Seq alignments into potential transcripts. 
 
   * **python 05.prep-StringTie-nogtf.py**
@@ -226,4 +226,4 @@ Pipeline to normalise and analyse gene expression
   * **24.edgeR-normalisation.R**
   Normalises read count data with [TMM](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-3-r25), produces graphs to check normalisation was successful, and prints RPKM data to a new file.
 
-#Splicing variation pipeline
+# Splicing variation pipeline
