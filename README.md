@@ -1,11 +1,11 @@
 # Quantification of Gene Expression and Splicing Variation 
-**[Preperation pipeline](#preperation-pipeline)
+**Preperation pipeline
 **
 1. Filter FASTQ files
 
 2. Map reads
 
-**[Expression Analysis Pipeline](#expression-analysis-pipeline)
+**Expression Analysis Pipeline
 **
 1. GTF generation with StringTie
 
@@ -17,7 +17,7 @@
 
 5. Analyse expression
 
-**[Splicing Variation Pipeline](#splicing-variation-pipeline)
+**Splicing Variation Pipeline
 **
 #Preperation Pipeline
 
