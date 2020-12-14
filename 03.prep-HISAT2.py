@@ -3,7 +3,7 @@
 ''' Prepares HISAT2
 Takes a folder containing paired-end fastq files and prepares .sh scripts to run
 HISAT2. Makes a new folder for the scripts (called wdpath/scripts), and a new folder for 
-each sample (called wdpath/sample).Assumes naming WTCHG_208_1_forward_paired.fastq.
+each sample (called wdpath/sample).Assumes naming WTCHG_208_1_forward_paired.fastq.gz
 '''
 #==============================================================================
 import argparse
@@ -33,13 +33,13 @@ args = parser.parse_args()
 #==============================================================================
 def list_folder(infolder):
     '''Returns a list of all files in a folder with the full path'''
-    return [os.path.join(infolder, f) for f in os.listdir(infolder) if f.endswith("fastq")]
+    return [os.path.join(infolder, f) for f in os.listdir(infolder) if f.endswith("fastq.gz")]
 #==============================================================================
 #Main==========================================================================
 #==============================================================================
 def main():
     infiles = list_folder(args.infolder)
-    print "Number of infiles (fastq) =", len(infiles)
+    print "Number of infiles (fastq.gz) =", len(infiles)
 
     #Creates dictionary of forward and reverse pairs
     filedictionary = defaultdict(list)
@@ -50,13 +50,13 @@ def main():
         elif name.split("_")[-2] == "reverse":
             uniqid = name.split("_2_")[0]
         filedictionary[uniqid].append(infile)
-    print "Number of pairs of infiles (fastq) =", len(filedictionary)
+    print "Number of pairs of infiles (fastq.gz) =", len(filedictionary)
 
     #check each one has forward and reverse
     for sample in filedictionary:
         check = []
         for s in filedictionary[sample]:
-            check.append(s.split("_paired.fastq")[0].split("_")[-1])
+            check.append(s.split("_paired.fastq.gz")[0].split("_")[-1])
         if len(check) == 2 and str("forward") in check and str("reverse") in check:
                 pass
         else:
@@ -77,9 +77,9 @@ def main():
     #Make new folders and .sh scripts
     for sample in filedictionary:
         for s in filedictionary[sample]:
-            if s.split("_paired.fastq")[0].split("_")[-2] == str("1"):
+            if s.split("_paired.fastq.gz")[0].split("_")[-2] == str("1"):
                 forward = s
-            elif s.split("_paired.fastq")[0].split("_")[-2] == str("2"):
+            elif s.split("_paired.fastq.gz")[0].split("_")[-2] == str("2"):
                 reverse = s
 
         sample_id = sample.split("_")[-1]

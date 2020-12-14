@@ -135,7 +135,7 @@ def main():
                                 output_reverse_paired+" "+
                                 output_reverse_unpaired+" "+
                                 "ILLUMINACLIP:"+args.pathtoadapters+
-                                ":2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:50"]
+                                ":2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:95"]
         maketrimmomaticrun.append(trimmomaticcommand)
 
     #run trimmomatic

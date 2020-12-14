@@ -1,0 +1,2 @@
+2020-12-14 15:05:31,889 Start the program with [02.max_length95.py /fastdata/bop20pp/data/mga/WTCHG_24920_07_fol/paired/WTCHG_24920_07_1_forward_paired.fastq.gz /fastdata/bop20pp/data/del.fq 95 ]
+

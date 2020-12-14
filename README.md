@@ -22,12 +22,13 @@ Pipeline to quality trim FASTQ files. Assumes illumina naming eg WTCHG_243504_00
 
 * **python 01.trimmomatic.py**
 This script takes a folder containing paired-end fastq.gz files, finds forward and reverse pairs, and quality trims with Trimmomatic. Must run version 0.35 for correct naming scheme.
+The script removes all reads shorter than 95nt for useage within rMATs
   
   [Trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic) - A flexible read trimming tool for Illumina NGS data eg
   >java -jar trimmomatic-0.35.jar PE -qualityscore input_forward.fq.gz input_reverse.fq.gz output_forward_paired.fq.gz output_forward_unpaired.fq.gz output_reverse_paired.fq.gz output_reverse_unpaired.fq.gz ILLUMINACLIP:adaptorfile:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:50
 
-* **python 02.concatenate-samples.py**
-This script takes a folder containing paired-end fastq files, finds forward and reverse pairs for each sample, and concatenates them. Produces one forward and one reverse file per sample. Important that the order of files concatenated is preserved between forward and reserve files for each sample. Assumes naming is Illumina trimmed format eg WTCHG_117425_208_1_forward_paired.fastq where 208 is the sample number and 117425 is the lane number.
+* **python 02.max_length95.py**
+This script trims reads to 95nt for input to rMATs
 
 ## 2. Obtain transcriptome
 
