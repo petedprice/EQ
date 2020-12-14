@@ -1,20 +1,27 @@
-# Quantify-gene-expression-reference-based
-Pipeline to 
+# Quantification of Gene Expression and Splicing Variation 
+**Preperation pipeline**
 
 1. Filter FASTQ files
 
-2. Obtain transcriptome
+2. Map reads
 
-3. Filter transcriptome
+**Expression Analysis Pipeline**
 
-4. Quantify gene expression
+1. GTF generation with StringTie
 
-5. Obtain reciprocal orthologs
+2. Filter transcriptome
 
-6. Analyse expression
+3. Quantify gene expression
 
+4. Obtain reciprocal orthologs
 
-## 1. Filter FASTQ files
+5. Analyse expression
+
+**Splicing Variation Pipeline**
+
+# Preperation Pipeline
+
+## 1. Filter fastqs
 
 Pipeline to quality trim FASTQ files. Assumes illumina naming eg WTCHG_243504_002_1 WTCHG_243504_002_2
 
@@ -30,7 +37,7 @@ The script removes all reads shorter than 95nt for useage within rMATs
 * **python 02.max_length95.py**
 This script trims reads to 95nt for input to rMATs
 
-## 2. Obtain transcriptome
+## 2. Map reads
 
 Pipeline to map RNA-seq data to a reference genome, identify transcripts and generate a reference transcriptome.
 
@@ -39,7 +46,12 @@ Pipeline to map RNA-seq data to a reference genome, identify transcripts and gen
   * **HISAT2 index**
     >hisat2-build -f reference_genome.fa reference_genome_db
 
+
+
   * **python 03.prep-HISAT2.py**
+
+  This script assumes that samples may be split over multiple lanes whilst sequencing. If so, change your file name to merge lane and sample number.
+
   This script takes a folder containing paired-end fastq files and prepares .sh scripts to run HISAT2. Makes a new folder for the scripts (called wdpath/scripts), and a new folder for each sample (called wdpath/sample). Assumes naming WTCHG_208_1_forward_paired.fastq
 
     >hisat2 reference_genome -1 forward.fastq -2 reverse.fastq qualityscore -q -p 12 --no-discordant --no-mixed --no-unal --dta - S samoutput --met-file metfile
@@ -63,6 +75,9 @@ Pipeline to map RNA-seq data to a reference genome, identify transcripts and gen
     StringTie takes as input a binary SAM (BAM) file sorted by reference position. This file contains spliced read alignments and can be produced directly by programs such as TopHat or it can be obtained by converting and sorting the output of HISAT2. We recommend using HISAT2 as it is a fast and accurate alignment program. A text file in SAM format which was produced by HISAT2 must be sorted and converted to BAM format using the samtools program. The file resulted from the below command (alns.sorted.bam) can be used as input for StringTie.
     >samtools view -Su alns.sam | samtools sort - alns.sorted
 
+# Expression Analysis Pipeline
+
+## 1. GTF generation with StringTie
 * **Extract and merge gene coordinates for each sample with [StringTie](https://ccb.jhu.edu/software/stringtie/index.shtml)** - A fast and highly efficient assembler of RNA-Seq alignments into potential transcripts. 
 
   * **python 05.prep-StringTie-nogtf.py**
@@ -79,7 +94,7 @@ Pipeline to map RNA-seq data to a reference genome, identify transcripts and gen
     
     >-m <min_len>	minimum input transcript length to include in the merge (default: 50)
 
-## 3. Filter transcriptome
+## 2. Filter transcriptome
 
 Pipeline to filter GTF file to remove non coding RNA
 
@@ -118,7 +133,7 @@ Pipeline to filter GTF file to remove non coding RNA
         **python 08.filter-GTF-ncrna.py**
         Takes a folder of blast tophit files and filters the GTF to remove these transcripts. In addition, it removes all other transcripts of a given gene from the GTF file if any one transcript maps to ncRNA.
 
-## 4. Quantify gene expression
+## 3. Quantify gene expression
 
 Pipeline to quantify and filter gene expression
 
@@ -164,7 +179,7 @@ Pipeline to quantify and filter gene expression
  * **python 15.filter-expression-2rpkm-halformoreofsamples.py**
     This script takes a file of genes and their rpkm values for each sample as output from edgeR. Filters expression. Gene must be expressed > 2FPKM in half or more of the individuals. The script creates a list of genes that have passed the filtering threshold and outputs a file containing genes that have passed the filtering threshold and their rpkm values. Takes a file of read counts across samples extracted from HTseq-count. (Header starts with "Geneid", and each gene name starts with "MSTRG"). Writes file with read counts for all genes in the list that have passed the 2rpkm filtering threshold.
 
-## 5. Obtain reciprocal orthologs
+## 4. Obtain reciprocal orthologs
 
 Pipeline to extract gene sequences for expressed genes and obtain reciprocal orthologs. Reduces redundancy in the gene set. 
 
@@ -206,7 +221,7 @@ Pipeline to extract gene sequences for expressed genes and obtain reciprocal ort
   * **python 23.get-expression-reciprocal-orthologs.py**
   This script takes a file containing read counts and extracts expression for reciprocal orthologs. Prints read counts into one file.
 
-## 6. Analyse expression
+## 5. Analyse expression
 
 Pipeline to normalise and analyse gene expression
 
@@ -216,3 +231,4 @@ Pipeline to normalise and analyse gene expression
   * **24.edgeR-normalisation.R**
   Normalises read count data with [TMM](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2010-11-3-r25), produces graphs to check normalisation was successful, and prints RPKM data to a new file.
 
+# Splicing variation pipeline
