@@ -64,7 +64,7 @@ def main():
             wd = os.path.dirname(infile)
             sample_id = os.path.basename(infile).split("_")[0]
             scriptname = script_folder_path+"/"+sample_id+"_coord_sort.sh"
-            bamoutfile = wd+"/"+os.path.basename(infile).split(".sam")[0]+"_coord_sorted"
+            bamoutfile = wd+"/"+os.path.basename(infile).split(".sam")[0]+"_coord_sorted.bam"
 
         with open(scriptname, "w") as outfile:
             outfile.write("#!/bin/bash -l")
