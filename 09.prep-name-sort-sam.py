@@ -64,7 +64,7 @@ def main():
             wd = os.path.dirname(infile)
             sample_id = os.path.basename(infile).split("_")[0]
             scriptname = script_folder_path+"/"+sample_id+"_name_sort.sh"
-            bamoutfile = wd+"/"+os.path.basename(infile).split(".sam")[0]+"_name_sorted"
+            bamoutfile = wd+"/"+os.path.basename(infile).split(".sam")[0]+"_name_sorted.sam"
         
         print infile
         with open(scriptname, "w") as outfile:
